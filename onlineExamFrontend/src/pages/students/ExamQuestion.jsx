@@ -43,20 +43,6 @@ function ExamQuestion() {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: optionReal }));
   };
 
-  const handleNext = () => {
-    if ((currentPage + 1) * 10 < questionsToShow.questions.length) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      setIsExamFinished(true);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   const handleSubmit = () => {
     questionsToShow.questions.forEach((question) => {
       const userAnswer = answers[question.questionId];
@@ -156,74 +142,55 @@ function ExamQuestion() {
         </div>
 
         <div className="space-y-6">
-          {questionsToShow.questions
-            .slice(currentPage * 10, (currentPage + 1) * 10)
-            .map((question, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-300"
-              >
-                <h3 className="text-lg font-semibold mb-4 text-blue-600">
-                  {currentPage * 10 + index + 1}. {question.questionText}
-                </h3>
+          {questionsToShow.questions.map((question, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-300"
+            >
+              <h3 className="text-lg font-semibold mb-4 text-blue-600">
+                {currentPage * 10 + index + 1}. {question.questionText}
+              </h3>
 
-                <div className="space-y-2 mb-4">
-                  {question.options.map((option, index) => (
-                    <label
-                      key={index}
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      <input
-                        type="radio"
-                        name={`question-${question.questionId}`}
-                        value={option}
-                        className="mr-2 rounded-full"
-                        onChange={() =>
-                          handleAnswerChange(question.questionId, index)
-                        }
-                      />
-                      <span className="text-md">{option}</span>
-                    </label>
-                  ))}
-                </div>
+              <div className="space-y-2 mb-4">
+                {question.options.map((option, index) => (
+                  <label
+                    key={index}
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${question.questionId}`}
+                      value={option}
+                      className="mr-2 rounded-full"
+                      onChange={() =>
+                        handleAnswerChange(question.questionId, index)
+                      }
+                    />
+                    <span className="text-md">{option}</span>
+                  </label>
+                ))}
               </div>
-            ))}
+            </div>
+          ))}
         </div>
 
         <div className="flex justify-between mt-6">
-          <button
-            onClick={handlePrev}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-300"
-          >
-            Previous
-          </button>
-
-          {isExamFinished ? (
-            <div className="flex space-x-4">
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition duration-300"
-              >
-                Submit
-              </button>
-            </div>
-          ) : (
+          <div className="flex space-x-4">
             <button
-              onClick={handleNext}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+              onClick={handleCancel}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
             >
-              Next
+              Cancel
             </button>
-          )}
+            <button
+              onClick={handleSubmit}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition duration-300"
+            >
+              Submit
+            </button>
+          </div>
         </div>
 
-        {/* Submit Confirmation Modal */}
         {showSubmitConfirmation && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
             <div className="bg-white p-6 rounded-lg max-w-sm mx-auto">
@@ -248,7 +215,6 @@ function ExamQuestion() {
           </div>
         )}
 
-        {/* Show the result card after submitting */}
         {showResultCard && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
             <div className="bg-white p-6 rounded-lg max-w-sm mx-auto">
