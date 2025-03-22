@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OnlineExamApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Starting Online Exam Application...");
 		SpringApplication.run(OnlineExamApplication.class, args);
+		System.out.println("Application Started Successfully!");
 	}
 
 }
