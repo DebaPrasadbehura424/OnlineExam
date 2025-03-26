@@ -71,7 +71,9 @@ function CreateQuestion(props) {
       setOptions(["", "", "", ""]);
       setCorrectAnswer("");
     } else {
-      alert("Please complete all fields and make sure the correct answer is in the options list.");
+      alert(
+        "Please complete all fields and make sure the correct answer is in the options list."
+      );
     }
   };
 
@@ -84,13 +86,21 @@ function CreateQuestion(props) {
       );
 
       if (correctAnswerIndex === -1) {
-        alert(`Question ${i + 1} has an invalid correct answer. Please use A, B, C, or D.`);
+        alert(
+          `Question ${
+            i + 1
+          } has an invalid correct answer. Please use A, B, C, or D.`
+        );
         return;
       }
 
       for (let j = 0; j < 4; j++) {
         if (!question.options[j]) {
-          alert(`Option ${j + 1} is missing for question ${i + 1}. Please fill in all options.`);
+          alert(
+            `Option ${j + 1} is missing for question ${
+              i + 1
+            }. Please fill in all options.`
+          );
           return;
         }
       }
@@ -102,7 +112,6 @@ function CreateQuestion(props) {
         questions
       );
       alert("Questions saved successfully.");
-      navigate("/loginhelper");
     } catch (error) {
       alert("Error submitting questions.");
       console.log(error);

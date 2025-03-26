@@ -22,6 +22,7 @@ import ForgetPassword from "./pages/authentication/forgetPassword";
 import UpdatePassword from "./pages/authentication/UpdatePassword";
 import ModifyPassword from "./pages/authentication/ModifyPassword";
 import Demo from "./pages/authentication/Demo";
+import EditQuestion from "./pages/teacher/EditQuestion";
 
 function App() {
   return (
@@ -47,7 +48,7 @@ function App() {
       />
       <Route path="/create-paper" element={<CreatePaper />} />
       <Route path="/create-question" element={<CreateQuestion />} />
-      <Route path="/editquestionpaper/:lamda" element={<CreateQuestion />} />
+      <Route path="/editquestionpaper/:lamda" element={<EditQuestion />} />
       <Route path="/my-papers" element={<MyPapers />} />
       <Route path="/my-institute" element={<MyInstitute />} />
       <Route path="/showquestionpaper" element={<ShowPaperQuestion />} />

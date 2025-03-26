@@ -175,7 +175,7 @@ public class MyinstituteController {
         Set<Student> students = myInstitute.getStudents();
 
         if (students.isEmpty()) {
-            return new ResponseEntity<>("No students found for this institute", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
         return new ResponseEntity<>(students, HttpStatus.OK);

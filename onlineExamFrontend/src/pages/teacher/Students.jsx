@@ -1,62 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { mypaperContextData } from "../../context/MypaperContext";
 
 function Students() {
-  const myInstituteId = sessionStorage.getItem("myInstituteId");
-  const [students, setStudents] = useState([]);
-
-  useEffect(() => {
-    if (myInstituteId) {
-      fetch(`http://localhost:4040/institute/getStudents/${myInstituteId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setStudents(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching students:", error);
-        });
-    }
-  }, [myInstituteId]);
+  const { students, loading } = useContext(mypaperContextData);
+  const myInstituteIdSession = sessionStorage.getItem("myInstituteId");
+  const myInstituteIdLocal = localStorage.getItem("myInstituteId");
+  const myInstituteId = myInstituteIdSession || myInstituteIdLocal;
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {students.map((student) => {
-            const studentName = student.studentName || "Unknown Student";
-            const profilePic = student.profilePic || "default-avatar.jpg";
-            const studClass = student.studClass || "> 10th Class";
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-8 text-center">
+          Students
+        </h1>
 
-            return (
-              <div
-                key={student.studId}
-                className="bg-white shadow-lg rounded-xl p-4 sm:p-6 flex items-center space-x-4"
-              >
-                <img
-                  src={profilePic}
-                  alt={studentName}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-gray-200"
-                />
-                <div className="flex-1">
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
-                    {studentName}
-                  </h3>
-                  <p className="text-sm text-gray-600">{studClass}</p>
-                </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="text-lg text-gray-600 animate-pulse">
+              Loading students...
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {students.length > 0 ? (
+              students.map((student) => {
+                const studentName = student.studentName || "Unknown Student";
+                const profilePic = student.profilePic || "default-avatar.jpg";
+                const studClass = student.studClass || "> 10th Class";
+
+                return (
+                  <div
+                    key={student.studId}
+                    className="bg-white rounded-xl shadow-md p-5 flex items-center space-x-4 hover:shadow-lg transition-all duration-300 border border-gray-100"
+                  >
+                    <img
+                      src={profilePic}
+                      alt={studentName}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-indigo-200 flex-shrink-0"
+                      onError={(e) => (e.target.src = "default-avatar.jpg")}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-md sm:text-lg font-semibold text-gray-800 truncate">
+                        {studentName}
+                      </h3>
+                      <p className="text-sm text-gray-600">{studClass}</p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : myInstituteId ? (
+              <div className="col-span-full text-center py-12 bg-white rounded-xl shadow-md">
+                <p className="text-lg text-gray-600">No students found.</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Add students to your institute to see them here.
+                </p>
               </div>
-            );
-          })}
-          {students.length === 0 && myInstituteId && (
-            <div className="col-span-full text-center text-gray-800 py-6 bg-white rounded-lg shadow-md">
-              No students found.
-            </div>
-          )}
-          {!myInstituteId && (
-            <div className="col-span-full text-center text-gray-800 py-6 bg-red-100 border-t-4 border-red-500 rounded-lg shadow-md">
-              Please create institute first or if already created then visit
-              that page
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="col-span-full text-center py-12 bg-red-50 border border-red-200 rounded-xl shadow-md">
+                <p className="text-lg font-semibold text-red-600">
+                  Institute Not Found
+                </p>
+                <p className="text-sm text-gray-600 mt-2">
+                  Please create an institute first or visit the institute page.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

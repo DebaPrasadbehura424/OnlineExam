@@ -5,14 +5,14 @@ export const questionPaperContextData = createContext(null);
 const QuestionPaperContext = ({ children }) => {
   const [questionsToShow, setQuestionsToShow] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [questionPaperId, setQuestioonPaperId] = useState(null);
+  const [questionPaperId, setQuestionPaperId] = useState(null);
   const [institute, setInstitute] = useState([]);
   const studentId = sessionStorage.getItem("studentId");
 
   useEffect(() => {
     const storedQuestionPaperId = sessionStorage.getItem("questionPaperIdx");
     if (storedQuestionPaperId) {
-      setQuestioonPaperId(storedQuestionPaperId);
+      setQuestionPaperId(storedQuestionPaperId);
     } else {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ const QuestionPaperContext = ({ children }) => {
     <questionPaperContextData.Provider
       value={{
         questionsToShow,
-        setQuestioonPaperId,
+        setQuestionPaperId,
         loading,
         setInstitute,
         institute,
