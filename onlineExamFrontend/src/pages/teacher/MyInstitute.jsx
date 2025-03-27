@@ -29,7 +29,7 @@ function MyInstitute() {
         }
       })
       .catch((error) => {
-        console.error("Error fetching institute data:", error);
+        console.error("Error fetching institute data:");
       })
       .finally(() => setLoading(false));
   }, [teacherId, myInstituteId]);

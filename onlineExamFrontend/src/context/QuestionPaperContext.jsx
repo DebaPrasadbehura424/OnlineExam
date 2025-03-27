@@ -1,58 +1,27 @@
 import React, { createContext, useEffect, useState } from "react";
-
+import axios from "axios";
 export const questionPaperContextData = createContext(null);
 
 const QuestionPaperContext = ({ children }) => {
-  const [questionsToShow, setQuestionsToShow] = useState([]);
   const [loading, setLoading] = useState(true);
   const [questionPaperId, setQuestionPaperId] = useState(null);
   const [institute, setInstitute] = useState([]);
   const studentId = sessionStorage.getItem("studentId");
 
   useEffect(() => {
-    const storedQuestionPaperId = sessionStorage.getItem("questionPaperIdx");
-    if (storedQuestionPaperId) {
-      setQuestionPaperId(storedQuestionPaperId);
+    if (sessionStorage.getItem("questionPaperIdx")) {
+      setQuestionPaperId(sessionStorage.getItem("questionPaperIdx"));
     } else {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (!questionPaperId) {
-      return;
-    }
-
-    setLoading(true);
-
-    fetch(
-      `http://localhost:4040/question-papers/questionPaper/${questionPaperId}`
-    )
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch data from the server");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data && data.questions) {
-          setQuestionsToShow(data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [questionPaperId]);
-
-  useEffect(() => {
     if (studentId) {
-      fetch(`http://localhost:4040/students/getInstitutes/${studentId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setInstitute(data || []);
+      axios
+        .get(`http://localhost:4040/students/getInstitutes/${studentId}`)
+        .then((res) => {
+          setInstitute(res.data || []);
         });
     }
   }, [studentId]);
@@ -60,7 +29,7 @@ const QuestionPaperContext = ({ children }) => {
   return (
     <questionPaperContextData.Provider
       value={{
-        questionsToShow,
+        questionPaperId,
         setQuestionPaperId,
         loading,
         setInstitute,

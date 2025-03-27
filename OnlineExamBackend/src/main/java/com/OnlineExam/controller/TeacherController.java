@@ -59,17 +59,13 @@ public class TeacherController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenRetrive> authenticateTeacher(@RequestBody TeacherDto teacherDto) {
-        System.out.println("hi");
+   
         Teacher teacher = teacherService.getTeacherByEmail(teacherDto.getEmail());
         if (teacher == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        // if (!passwordEncoder.matches(teacherDto.getPassword(),
-        // teacher.getPassword())) {
-        // return ResponseEntity.badRequest().body(null);
-        // }
-
-        if (!teacherDto.getPassword().equals(teacher.getPassword())) {
+        if (!passwordEncoder.matches(teacherDto.getPassword(),
+                teacher.getPassword())) {
             return ResponseEntity.badRequest().body(null);
         }
 

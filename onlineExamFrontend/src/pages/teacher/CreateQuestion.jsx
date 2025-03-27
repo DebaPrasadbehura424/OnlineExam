@@ -7,7 +7,6 @@ function CreateQuestion(props) {
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [questions, setQuestions] = useState([]);
-  const navigate = useNavigate();
   const selectquestionPaperId = sessionStorage.getItem("questionPaperIdx");
 
   const handleQuestionTextChangeBefore = (e) => {

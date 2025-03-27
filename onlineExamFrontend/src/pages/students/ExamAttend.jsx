@@ -7,7 +7,7 @@ function ExamAttend() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setQuestioonPaperId } = useContext(questionPaperContextData);
+  const { setQuestionPaperId } = useContext(questionPaperContextData);
 
   useEffect(() => {
     setError(null);
@@ -25,57 +25,66 @@ function ExamAttend() {
 
   const handleStart = (id) => {
     sessionStorage.setItem("questionPaperIdx", id);
-    setQuestioonPaperId(id);
+    setQuestionPaperId(id);
     navigate("/examquestion");
   };
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <p className="text-2xl font-semibold text-[#181818]">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 animate-fadeIn">
             Available Exams
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Select an exam to begin your test
           </p>
         </div>
 
         {loading && (
-          <div className="text-center">
-            <p className="text-gray-500 text-lg">Loading exams...</p>
-          </div>
-        )}
-        {error && (
-          <div className="text-center">
-            <p className="text-red-500 text-lg">{error}</p>
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600 text-lg">Loading exams...</p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-600 text-lg font-medium bg-red-50 p-4 rounded-lg inline-block">
+              {error}
+            </p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {questionPapers.map((paper, index) => (
             <div
               key={index}
-              className="bg-gray-200 rounded-2xl shadow-md overflow-hidden transform transition duration-300 border border-[#181818]"
+              className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-100 animate-fadeIn"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-[#181818] text-center mb-3">
+                <h3 className="text-xl font-semibold text-gray-800 text-center mb-4 truncate">
                   {paper.subject}
                 </h3>
-                <p className="text-sm text-[#181818] text-left mb-3">
-                  Teacher: {paper.teacher.name}
-                </p>
-                <div className="text-left mb-4">
-                  <p className="text-sm font-medium text-[#181818]">
-                    Marks: {paper.fullMarks}
+                <div className="space-y-2 text-gray-600">
+                  <p className="flex items-center text-sm">
+                    <span className="mr-2">👩‍🏫</span> {paper.teacher.name}
                   </p>
-                  <p className="text-sm font-medium text-[#181818]">
-                    Time: {paper.examDuration} mins
+                  <p className="flex items-center text-sm">
+                    <span className="mr-2">📊</span> Marks:{" "}
+                    {paper.questions.length}
                   </p>
-                  <p className="text-sm font-medium text-[#181818]">
-                    Type: {paper.examType}
+                  <p className="flex items-center text-sm">
+                    <span className="mr-2">⏱️</span> {paper.examDuration} mins
+                  </p>
+                  <p className="flex items-center text-sm">
+                    <span className="mr-2">📝</span> {paper.examType}
                   </p>
                 </div>
                 <button
                   onClick={() => handleStart(paper.questionPaperId)}
-                  className="w-full px-4 py-2 bg-[#181818] text-white font-semibold rounded-md hover:bg-gray-200 hover:text-[#181818] border transition duration-300 text-sm"
+                  className="mt-6 w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   Start Exam
                 </button>
@@ -84,6 +93,24 @@ function ExamAttend() {
           ))}
         </div>
       </div>
+
+      <style>
+        {`
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out forwards;
+          }
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }

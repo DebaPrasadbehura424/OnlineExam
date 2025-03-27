@@ -15,7 +15,7 @@ import ShowPaperQuestion from "./pages/teacher/ShowPaperQuestion";
 import MyInstitute from "./pages/teacher/MyInstitute";
 
 // students
-import StudDashBoard from "./pages/students/Dashboard";
+import StudDashBoard from "./pages/students/DashboardStud";
 import StudHelper from "./Helper/StudentHelper";
 import ExamQuestion from "./pages/students/ExamQuestion";
 import ForgetPassword from "./pages/authentication/forgetPassword";
@@ -23,6 +23,7 @@ import UpdatePassword from "./pages/authentication/UpdatePassword";
 import ModifyPassword from "./pages/authentication/ModifyPassword";
 import Demo from "./pages/authentication/Demo";
 import EditQuestion from "./pages/teacher/EditQuestion";
+import FollowTeacherPapers from "./pages/students/FollowTeacherPapers";
 
 function App() {
   return (
@@ -48,13 +49,14 @@ function App() {
       />
       <Route path="/create-paper" element={<CreatePaper />} />
       <Route path="/create-question" element={<CreateQuestion />} />
-      <Route path="/editquestionpaper/:lamda" element={<EditQuestion />} />
       <Route path="/my-papers" element={<MyPapers />} />
       <Route path="/my-institute" element={<MyInstitute />} />
       <Route path="/showquestionpaper" element={<ShowPaperQuestion />} />
+      <Route path="/editquestionpaper" element={<EditQuestion />} />
 
       {/* student  side  */}
       <Route path="/find-dashboard" element={<StudDashBoard />} />
+      <Route path="/findpapers" element={<FollowTeacherPapers />} />
       <Route path="/examquestion" element={<ExamQuestion />} />
       <Route
         path="/studHelper"

@@ -10,6 +10,8 @@ export function MypaperContext({ children }) {
   const myInstituteId = sessionStorage.getItem("myInstituteId");
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const panels = sessionStorage.getItem("panels");
+  const [showPanel, setShowPanel] = useState(panels || "dashboardveiw");
 
   useEffect(() => {
     const fetchQuestionPapers = async () => {
@@ -57,6 +59,8 @@ export function MypaperContext({ children }) {
         students,
         setStudents,
         loading,
+        showPanel,
+        setShowPanel,
       }}
     >
       {children}

@@ -39,6 +39,7 @@ function Login() {
     try {
       if (role === "Teacher") {
         const response = await axios.post(url, { email, password });
+
         if (response.status === 200) {
           sessionStorage.setItem("token", response.data.token);
           sessionStorage.setItem("teacherId", response.data.teacher.teacherId);

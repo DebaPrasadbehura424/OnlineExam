@@ -1,15 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { questionPaperContextData } from "../../context/QuestionPaperContext";
 
 function ExamQuestion() {
-  const { questionsToShow, loading } = useContext(questionPaperContextData);
-  const [currentPage, setCurrentPage] = useState(0);
+  const questionPaperIdX = sessionStorage.getItem("questionPaperIdx");
+  const { questionPaperId } = useContext(questionPaperContextData);
+
+  const [questionsToShow, setQuestionsToShow] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState({});
   const [isExamFinished, setIsExamFinished] = useState(false);
-  const [timer, setTimer] = useState(
-    questionsToShow ? questionsToShow.examDuration * 60 : 0
-  );
-  const [isTimerRunning, setIsTimerRunning] = useState(true);
+  const [timerMinutes, setTimerMinutes] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(59);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [showSubmitConfirmation, setShowSubmitConfirmation] = useState(false);
   const [showInstructionPopup, setShowInstructionPopup] = useState(true);
   const [correct, setCorrect] = useState(0);
@@ -17,156 +19,180 @@ function ExamQuestion() {
   const [showResultCard, setShowResultCard] = useState(false);
 
   useEffect(() => {
-    if (!questionsToShow) return;
+    if (!questionPaperId) return;
+    setLoading(true);
+    fetch(
+      `http://localhost:4040/question-papers/questionPaper/${questionPaperId}`
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch data from the server");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data && data.questions) {
+          setQuestionsToShow(data);
+          setTimerMinutes(data.examDuration || 0);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [questionPaperId]);
 
+  useEffect(() => {
     let interval;
-
-    if (!showInstructionPopup && isTimerRunning && timer > 0) {
+    if (isTimerRunning && timerMinutes >= 0 && timerSeconds >= 0) {
       interval = setInterval(() => {
-        setTimer((prevTime) => {
-          if (prevTime === 1) {
-            clearInterval(interval);
-            handleSubmit();
+        setTimerSeconds((prev) => {
+          if (prev === 0) {
+            setTimerMinutes((prevMin) => prevMin - 1);
+            return 59;
           }
-          return prevTime - 1;
+          return prev - 1;
         });
       }, 1000);
     }
 
-    return () => {
-      clearInterval(interval); // Cleanup interval
-    };
-  }, [timer, isTimerRunning, showInstructionPopup, questionsToShow]);
+    if (timerMinutes === 0 && timerSeconds === 0) {
+      handleSubmit();
+    }
+
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timerMinutes, timerSeconds]);
 
   const handleAnswerChange = (questionId, index) => {
     const optionReal = String.fromCharCode(65 + index).toUpperCase();
-    setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: optionReal }));
+    setAnswers((prev) => ({ ...prev, [questionId]: optionReal }));
   };
 
   const handleSubmit = () => {
+    if (!questionsToShow) return;
+    setIsTimerRunning(false);
+
+    let correctCount = 0;
+    let wrongCount = 0;
+
     questionsToShow.questions.forEach((question) => {
       const userAnswer = answers[question.questionId];
       if (userAnswer) {
-        if (userAnswer === question.correctAnswer) {
-          setCorrect((prev) => prev + 1);
-        } else {
-          setWrong((prev) => prev + 1);
-        }
+        if (userAnswer === question.correctAnswer) correctCount++;
+        else wrongCount++;
       }
     });
 
+    setCorrect(correctCount);
+    setWrong(wrongCount);
     setIsExamFinished(true);
     setShowSubmitConfirmation(false);
     setShowResultCard(true);
   };
 
-  const handleCancel = () => {
-    setShowSubmitConfirmation(false);
-  };
-
-  const handleTimerPause = () => {
-    setIsTimerRunning(false);
-  };
-
-  const handleTimerResume = () => {
+  const handleStartExam = () => {
+    setShowInstructionPopup(false);
     setIsTimerRunning(true);
   };
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${minutes < 10 ? "0" : ""}${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds}`;
-  };
-
-  const handleConfirmSubmit = () => {
-    setShowSubmitConfirmation(true);
-  };
-
-  const handleCloseInstructionPopup = () => {
-    setShowInstructionPopup(false);
+  const handleCloseResultCard = () => {
+    setShowResultCard(false);
   };
 
   if (loading || !questionsToShow) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      {/* Instruction Popup */}
       {showInstructionPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-          <div className="bg-white p-6 rounded-lg max-w-sm mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Exam Instructions:</h2>
-            <ul className="list-disc pl-6 text-md text-gray-600 mb-4">
-              <li>Once the exam starts, the timer will begin automatically.</li>
-              <li>
-                If the time runs out, your exam will be submitted automatically.
-              </li>
-              <li>Manage your time wisely and complete all questions.</li>
-              <li>Good luck!</li>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 animate-fadeIn">
+          <div className="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full mx-4">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Exam Instructions
+            </h2>
+            <ul className="list-disc pl-6 text-gray-600 space-y-2">
+              <li>The timer starts once you begin the exam.</li>
+              <li>Exam auto-submits when time runs out.</li>
+              <li>Answer all questions carefully.</li>
+              <li>Best of luck!</li>
             </ul>
-            <div className="flex justify-center">
-              <button
-                onClick={handleCloseInstructionPopup}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-              >
-                Start Exam
-              </button>
-            </div>
+            <button
+              onClick={handleStartExam}
+              className="mt-6 w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300"
+            >
+              Start Exam
+            </button>
           </div>
         </div>
       )}
 
-      <div className="bg-white shadow-xl rounded-lg p-6 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
-          English Exam
-        </h1>
-
-        <div className="text-center mb-6">
-          <div className="text-xl font-semibold">
-            Institution: ABC University
-          </div>
-          <div className="text-md text-gray-600">
-            Duration: {questionsToShow.examDuration} minutes
-          </div>
-          <div className="text-md text-gray-600">
-            Full Marks: {questionsToShow.fullMarks}
-          </div>
-        </div>
-
-        <div className="flex justify-center items-center mb-6">
-          <div className="text-xl font-semibold text-red-600">
-            Time Left: {formatTime(timer)}
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-indigo-700">
+            {questionsToShow.subject || "Exam"}
+          </h1>
+          <div className="mt-2 sm:mt-0 flex items-center space-x-4">
+            <span className={`text-lg font-medium ${"text-red-600"}`}>
+              {timerMinutes < 10 ? "0" + timerMinutes : timerMinutes} :{" "}
+              {timerSeconds < 10 ? "0" + timerSeconds : timerSeconds}
+            </span>
+            <button
+              onClick={() => setIsTimerRunning(!isTimerRunning)}
+              className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+            >
+              {isTimerRunning ? "⏸️" : "▶️"}
+            </button>
           </div>
         </div>
 
+        <div className="text-center text-gray-600 mb-6 space-y-1">
+          <p>Institution: ABC University</p>
+          <p>
+            Duration: {questionsToShow.examDuration} mins | Marks:{" "}
+            {questionsToShow.fullMarks}
+          </p>
+        </div>
+
+        {/* Questions */}
         <div className="space-y-6">
           {questionsToShow.questions.map((question, index) => (
             <div
-              key={index}
-              className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-300"
+              key={question.questionId}
+              className="bg-gray-50 p-5 rounded-lg shadow-sm border border-gray-200 animate-slideIn"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <h3 className="text-lg font-semibold mb-4 text-blue-600">
-                {currentPage * 10 + index + 1}. {question.questionText}
+              <h3 className="text-lg font-semibold text-indigo-600 mb-3">
+                {index + 1}. {question.questionText}
               </h3>
-
-              <div className="space-y-2 mb-4">
-                {question.options.map((option, index) => (
+              <div className="space-y-3">
+                {question.options.map((option, idx) => (
                   <label
-                    key={index}
-                    className="block text-sm font-medium text-gray-700"
+                    key={idx}
+                    className="flex items-center space-x-3 cursor-pointer"
                   >
                     <input
                       type="radio"
                       name={`question-${question.questionId}`}
                       value={option}
-                      className="mr-2 rounded-full"
-                      onChange={() =>
-                        handleAnswerChange(question.questionId, index)
+                      checked={
+                        answers[question.questionId] ===
+                        String.fromCharCode(65 + idx)
                       }
+                      onChange={() =>
+                        handleAnswerChange(question.questionId, idx)
+                      }
+                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
                     />
-                    <span className="text-md">{option}</span>
+                    <span className="text-gray-700">{option}</span>
                   </label>
                 ))}
               </div>
@@ -174,74 +200,94 @@ function ExamQuestion() {
           ))}
         </div>
 
-        <div className="flex justify-between mt-6">
-          <div className="flex space-x-4">
+        {/* Controls */}
+        <div className="mt-8 flex justify-between">
+          <button
+            onClick={() => setShowSubmitConfirmation(true)}
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300"
+          >
+            Submit Exam
+          </button>
+        </div>
+      </div>
+
+      {/* Submit Confirmation */}
+      {showSubmitConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 animate-fadeIn">
+          <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Confirm Submission
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to submit your exam?
+            </p>
+            <div className="flex justify-between">
+              <button
+                onClick={() => setShowSubmitConfirmation(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Result Card */}
+      {showResultCard && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 animate-fadeIn">
+          <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4">
+            <h2 className="text-2xl font-bold text-indigo-700 mb-4 text-center">
+              Results
+            </h2>
+            <div className="space-y-3 text-center">
+              <p className="text-green-600 text-lg">Correct: {correct}</p>
+              <p className="text-red-600 text-lg">Wrong: {wrong}</p>
+              <p className="text-blue-600 text-lg">
+                Miss: {questionsToShow.questions.length - (correct + wrong)}
+              </p>
+              <p className="text-gray-600">
+                Score:{" "}
+                {((correct / questionsToShow.questions.length) * 100).toFixed(
+                  1
+                )}
+                %
+              </p>
+            </div>
             <button
-              onClick={handleCancel}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
+              onClick={handleCloseResultCard}
+              className="mt-6 w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
             >
-              Cancel
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition duration-300"
-            >
-              Submit
+              Close
             </button>
           </div>
         </div>
+      )}
 
-        {showSubmitConfirmation && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-            <div className="bg-white p-6 rounded-lg max-w-sm mx-auto">
-              <h2 className="text-xl font-semibold mb-4 text-center text-blue-600">
-                Are you sure you want to submit the exam?
-              </h2>
-              <div className="flex justify-between">
-                <button
-                  onClick={handleCancel}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
-                >
-                  Yes, Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showResultCard && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-            <div className="bg-white p-6 rounded-lg max-w-sm mx-auto">
-              <h2 className="text-xl font-semibold mb-4 text-center text-blue-600">
-                🎉 Congratulations! 🎉
-              </h2>
-              <div className="text-center mb-4">
-                <h3 className="font-semibold text-lg text-gray-800">
-                  Your Results:
-                </h3>
-                <p className="text-md text-green-500">
-                  Correct Answers: {correct}
-                </p>
-                <p className="text-md text-red-500">Wrong Answers: {wrong}</p>
-              </div>
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setShowResultCard(false)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      <style>
+        {`
+          .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in;
+          }
+          .animate-slideIn {
+            animation: slideIn 0.5s ease-out;
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}
+      </style>
     </div>
   );
 }

@@ -1,21 +1,11 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  FaPlus,
-  FaEdit,
-  FaTrash,
-  FaChartBar,
-  FaUsers,
-  FaClock,
-  FaEye, // Added FaEye for view icon
-} from "react-icons/fa";
+import React, { useContext } from "react";
+import { FaPlus, FaEdit, FaChartBar, FaUsers, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { mypaperContextData } from "../../context/MypaperContext";
 
 const DashboardOverView = () => {
   const { questionPapers, students } = useContext(mypaperContextData);
   const navigate = useNavigate();
-  console.log(questionPapers);
   const handleQuestionPaperId = (id) => {
     sessionStorage.setItem("questionPaperIdx", id);
     navigate("/showquestionpaper");
@@ -120,7 +110,10 @@ const DashboardOverView = () => {
               >
                 <FaPlus className="mr-2" /> Create New Exam
               </button>
-              <button className="w-full flex items-center justify-center px-4 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all duration-300">
+              <button
+                className="w-full flex items-center justify-center px-4 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all duration-300"
+                onClick={() => alert("Now this service is not allowed")}
+              >
                 <FaEdit className="mr-2" /> Student Follow
               </button>
             </div>

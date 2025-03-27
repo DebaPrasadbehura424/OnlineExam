@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaSignOutAlt,
@@ -15,12 +15,12 @@ import MyPapers from "./MyPapers";
 import MyInstitute from "./MyInstitute";
 import Students from "./Students";
 import { useNavigate } from "react-router-dom";
+import { mypaperContextData } from "../../context/MypaperContext";
 
 function Dashboard() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  const panels = sessionStorage.getItem("panels");
-  const [showPanel, setShowPanel] = useState(panels || "dashboardveiw");
+  const { showPanel, setShowPanel } = useContext(mypaperContextData);
 
   const navigate = useNavigate();
 

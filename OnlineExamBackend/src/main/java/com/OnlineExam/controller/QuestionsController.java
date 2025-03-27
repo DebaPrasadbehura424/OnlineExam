@@ -45,7 +45,7 @@ public class QuestionsController {
                 if (questionDto.getOptions() == null || questionDto.getOptions().size() != 4) {
                     throw new IllegalArgumentException("Exactly 4 options are required.");
                 }
-
+                System.out.println(questionDto.getQuestionPaperId() + "jdwije");
                 QuestionPaper questionPaper = questionPaperRepo.findById(questionDto.getQuestionPaperId())
                         .orElseThrow(() -> new IllegalArgumentException("Invalid QuestionPaper ID"));
 

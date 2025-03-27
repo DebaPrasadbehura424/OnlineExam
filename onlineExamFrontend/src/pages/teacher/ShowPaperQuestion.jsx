@@ -17,7 +17,6 @@ function ShowPaperQuestion(props) {
           `http://localhost:4040/question-papers/questionPaper/${questionPaperId}`
         );
         setQuestionPaper(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to load question paper.");
       } finally {
