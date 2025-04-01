@@ -1,6 +1,6 @@
 import React from "react";
 
-function Form({handleSubmit,handleInputChange,formData}) {
+function Card({ handleSubmit, handleInputChange, formData }) {
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
       <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-8">
@@ -41,4 +41,4 @@ function Form({handleSubmit,handleInputChange,formData}) {
   );
 }
 
-export default Form;
+export default Card;

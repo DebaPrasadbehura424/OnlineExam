@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import { mypaperContextData } from "../../context/MypaperContext";
-import Form from "./components/form";
-import Buttons from "./components/Buttons";
-import IsEditingTrue from "./components/isEditingTrue";
+import Card from "./components/Crad";
+import CardButton from "./components/CradButton";
 import IsEditingFalse from "./components/IsEditingFalse";
-
+import IsEditingTrue from "./components/IsEditingTrue";
 function MyInstitute() {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -117,7 +116,7 @@ function MyInstitute() {
             ) : (
               <IsEditingTrue myInstituteData={myInstituteData} />
             )}
-            <Buttons
+            <CardButton
               isEditing={isEditing}
               toggleEdit={toggleEdit}
               handleSave={handleSave}
@@ -125,7 +124,7 @@ function MyInstitute() {
             />
           </div>
         ) : (
-          <Form
+          <Card
             handleSubmit={handleSubmit}
             handleInputChange={handleInputChange}
             formData={formData}

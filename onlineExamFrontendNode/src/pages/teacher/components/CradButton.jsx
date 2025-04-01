@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTrash, FaEdit, FaSave } from "react-icons/fa";
-function Buttons({ isEditing, toggleEdit, handleSave, handleDelete }) {
+function CardButton({ isEditing, toggleEdit, handleSave, handleDelete }) {
   return (
     <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
       {isEditing && (
@@ -35,4 +35,4 @@ function Buttons({ isEditing, toggleEdit, handleSave, handleDelete }) {
   );
 }
 
-export default Buttons;
+export default CardButton;
