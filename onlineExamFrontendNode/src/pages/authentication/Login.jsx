@@ -81,13 +81,13 @@ function Login() {
   };
 
   const handleSocialLogin = (platform) => {
-    if (platform === "google") {
-      window.location.href =
-        "http://localhost:4040/oauth2/authorization/google";
-    } else if (platform === "github") {
-      window.location.href =
-        "http://localhost:4040/oauth2/authorization/github";
-    }
+    // if (platform === "google") {
+    //   window.location.href =
+    //     "http://localhost:4040/oauth2/authorization/google";
+    // } else if (platform === "github") {
+    //   window.location.href =
+    //     "http://localhost:4040/oauth2/authorization/github";
+    // }
   };
 
   return (

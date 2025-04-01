@@ -16,10 +16,10 @@ import MyInstitute from "./pages/teacher/MyInstitute";
 // students
 import StudDashBoard from "./pages/students/DashboardStud";
 import ExamQuestion from "./pages/students/ExamQuestion";
-import ForgetPassword from "./pages/authentication/forgetPassword";
-import UpdatePassword from "./pages/authentication/UpdatePassword";
-import ModifyPassword from "./pages/authentication/ModifyPassword";
-import Demo from "./pages/authentication/Demo";
+// import ForgetPassword from "./pages/authentication/forgetPassword";
+// import UpdatePassword from "./pages/authentication/UpdatePassword";
+// import ModifyPassword from "./pages/authentication/ModifyPassword";
+// import Demo from "./pages/authentication/Demo";
 import EditQuestion from "./pages/teacher/EditQuestion";
 import FollowTeacherPapers from "./pages/students/FollowTeacherPapers";
 
@@ -31,10 +31,12 @@ function App() {
       {/* teacher side  */}
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/forgetpassword" element={<ForgetPassword />} />
-      <Route path="/otpverify" element={<UpdatePassword />} />
-      <Route path="/modifypassword" element={<ModifyPassword />} />
-      <Route path="/demo" element={<Demo />} />
+
+      {/* <Route path="/forgetpassword" element={<ForgetPassword />} /> */}
+      {/* <Route path="/otpverify" element={<UpdatePassword />} /> */}
+      {/* <Route path="/modifypassword" element={<ModifyPassword />} /> */}
+      {/* <Route path="/demo" element={<Demo />} /> */}
+
       <Route path="/dashboard" element={<Dashboard />} />
 
       <Route path="/loginhelper" element={<Dashboard />} />

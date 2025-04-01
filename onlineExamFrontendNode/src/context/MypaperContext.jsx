@@ -97,8 +97,6 @@ export function MypaperContext({ children }) {
         institutePaperId,
         student,
         setStudent,
-        questionPapers,
-        setQuestionPapers,
         loading,
         setLoading,
         myInstituteData,

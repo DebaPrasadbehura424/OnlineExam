@@ -25,7 +25,7 @@ function Register() {
       );
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
-        alert(`successfully ${isStudent ? "student" : "teacher"+"register"}`);
+        alert(`successfully ${isStudent ? "student" : "teacher" + "register"}`);
         navigate(isStudent ? "/studHelper" : "/loginhelper");
       }
     } catch (err) {
@@ -155,19 +155,19 @@ function Register() {
 
           <div className="mt-6 flex justify-center gap-4">
             <button
-              onClick={() =>
-                (window.location.href =
-                  "http://localhost:4040/oauth2/authorization/google")
-              }
+              // onClick={() =>
+              //   (window.location.href =
+              //     "http://localhost:4040/oauth2/authorization/google")
+              // }
               className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-all duration-200 shadow-sm"
             >
               <FaGoogle className="text-red-500" size={20} />
             </button>
             <button
-              onClick={() =>
-                (window.location.href =
-                  "http://localhost:4040/oauth2/authorization/github")
-              }
+              // onClick={() =>
+              //   (window.location.href =
+              //     "http://localhost:4040/oauth2/authorization/github")
+              // }
               className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-all duration-200 shadow-sm"
             >
               <FaGithub className="text-gray-800" size={20} />
