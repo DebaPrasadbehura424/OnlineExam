@@ -20,7 +20,9 @@ function Register() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:7777/${isStudent ? "student" : "teacher"}/register`,
+        `https://online-exam-backendnode.vercel.app/${
+          isStudent ? "student" : "teacher"
+        }/register`,
         formData
       );
       if (response.status === 201) {

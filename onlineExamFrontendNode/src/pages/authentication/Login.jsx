@@ -37,8 +37,8 @@ function Login() {
 
     const url =
       role === "Teacher"
-        ? "http://localhost:7777/teacher/login"
-        : "http://localhost:7777/student/login";
+        ? "https://online-exam-backendnode.vercel.app/teacher/login"
+        : "https://online-exam-backendnode.vercel.app/student/login";
 
     try {
       if (role === "Teacher") {

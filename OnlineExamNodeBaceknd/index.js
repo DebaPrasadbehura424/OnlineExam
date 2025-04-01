@@ -11,7 +11,7 @@ const studentRoutes = require("./server/route/StudentRoute");
 const instituteRoutes = require("./server/route/MyinstituteRoute");
 const questionPaperRoutes = require("./server/route/QuestionPaperRoute");
 
-app.use(cors());
+// app.use(cors());
 app.use(
   cors({
     origin: "https://online-exam-forntendnode.vercel.app",

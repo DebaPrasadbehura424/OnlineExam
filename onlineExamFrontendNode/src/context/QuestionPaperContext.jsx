@@ -10,7 +10,9 @@ const QuestionPaperContext = ({ children }) => {
   useEffect(() => {
     if (studentId) {
       axios
-        .get(`http://localhost:7777/student/showInstitute/${studentId}`)
+        .get(
+          `https://online-exam-backendnode.vercel.app/student/showInstitute/${studentId}`
+        )
         .then((res) => {
           setInstitute(res.data.institutes || []);
         });

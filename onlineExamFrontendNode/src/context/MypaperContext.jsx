@@ -16,7 +16,7 @@ export function MypaperContext({ children }) {
       if (token != null && teacherId != null) {
         try {
           const response = await axios.get(
-            "http://localhost:7777/teacher/profile",
+            "https://online-exam-backendnode.vercel.app/teacher/profile",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export function MypaperContext({ children }) {
       if (teacherId != null) {
         try {
           const response = await axios.get(
-            `http://localhost:7777/teacher/questionPaperCreatedByTeacher/${teacherId}`
+            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${teacherId}`
           );
 
           setQuestionPapers(response.data.questionPapers);
@@ -59,7 +59,7 @@ export function MypaperContext({ children }) {
       const fetchQuestionPapers = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:7777/teacher/questionPaperCreatedByTeacher/${teacherId}`
+            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${teacherId}`
           );
           setQuestionPapers(response.data.questionPapers);
         } catch (error) {
@@ -76,7 +76,9 @@ export function MypaperContext({ children }) {
     if (myInstituteId) {
       setLoading(true);
       axios
-        .get(`http://localhost:7777/institute/showMyInsitute/${teacherId}`)
+        .get(
+          `https://online-exam-backendnode.vercel.app/institute/showMyInsitute/${teacherId}`
+        )
         .then((response) => {
           const institute = response.data;
           setMyInstituteData(institute);
