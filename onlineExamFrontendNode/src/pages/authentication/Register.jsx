@@ -16,14 +16,16 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   // const backednUrl = "http://localhost:7777";
-  const backednUrl = "https://online-exam-backendnode.vercel.app";
+  // const backednUrl = "https://online-exam-backendnode.vercel.app";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
-        `${backednUrl}/${isStudent ? "student" : "teacher"}/register`,
+        `"https://online-exam-backendnode.vercel.app"/${
+          isStudent ? "student" : "teacher"
+        }/register`,
         formData
       );
       if (response.status === 201) {
