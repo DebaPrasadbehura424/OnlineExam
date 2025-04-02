@@ -10,12 +10,14 @@ function FollowTeacher() {
   const myInstituteId = sessionStorage.getItem("myInstituteId");
   const studentId = sessionStorage.getItem("studentId");
 
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
   //done properly
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
         const response = await axios.get(
-          "https://online-exam-backendnode.vercel.app/institute/showMyInsituteAll"
+          `${backednUrl}/institute/showMyInsituteAll`
         );
         if (response.status === 200) {
           setTeachers(response.data || []);
@@ -40,13 +42,10 @@ function FollowTeacher() {
     const updatedTeachers = teachers.filter((t) => t._id !== instituteId);
     setTeachers(updatedTeachers);
     try {
-      const response = await axios.post(
-        `https://online-exam-backendnode.vercel.app/institute/addstudent`,
-        {
-          instituteId,
-          studentId,
-        }
-      );
+      const response = await axios.post(`${backednUrl}/institute/addstudent`, {
+        instituteId,
+        studentId,
+      });
       if (response.status === 200) {
         setInstitute((prev) => [...prev, response.data]);
         alert("Successfully connected to the institute!");

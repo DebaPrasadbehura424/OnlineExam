@@ -1,20 +1,14 @@
 import React, { useContext, useState } from "react";
+import { questionPaperContextData } from "../../context/QuestionPaperContext";
+import { useNavigate } from "react-router-dom";
 
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { institute } = useContext(questionPaperContextData);
+  const navigate = useNavigate();
   const studentData = {
-    attendedExams: 5,
-    followedTeachers: 8,
-    upcomingExams: 3,
-    averageScore: 87.5,
-    recentExams: [
-      { id: 1, title: "Math Finals", score: 92, date: "2025-03-20" },
-      { id: 2, title: "Physics Quiz", score: 85, date: "2025-03-15" },
-    ],
-    achievements: [
-      { id: 1, title: "Top Scorer", date: "2025-03-01" },
-      { id: 2, title: "Perfect Attendance", date: "2025-02-15" },
-    ],
+    attendedExams: "not avaliable",
+    followedTeachers: institute.length,
   };
 
   const renderContent = () => {
@@ -33,18 +27,6 @@ const StudentDashboard = () => {
               value={studentData.followedTeachers}
               icon="👩‍🏫"
               color="bg-green-100"
-            />
-            <StatCard
-              title="Upcoming Exams"
-              value={studentData.upcomingExams}
-              icon="⏰"
-              color="bg-yellow-100"
-            />
-            <StatCard
-              title="Average Score"
-              value={`${studentData.averageScore}%`}
-              icon="⭐"
-              color="bg-purple-100"
             />
           </div>
         );
@@ -118,7 +100,7 @@ const StudentDashboard = () => {
 
         <div className="bg-white p-6 rounded-xl shadow-lg">
           <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200">
-            {["overview", "exams", "achievements"].map((tab) => (
+            {["overview"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -139,15 +121,15 @@ const StudentDashboard = () => {
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             className="bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
-            // onClick={() => setShowPanel("examattendance")}
+            onClick={() => navigate("/examattend")}
           >
             Join Exam
           </button>
           <button
             className="bg-green-700 text-white py-3 px-6 rounded-lg hover:bg-green-600 transition-colors"
-            // onClick={() => setShowPanel("totalpoints")}
+            onClick={() => navigate("/yourinstitute")}
           >
-            Contact Teacher
+            Connected Teacher
           </button>
         </div>
       </div>

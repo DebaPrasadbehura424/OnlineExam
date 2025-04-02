@@ -16,14 +16,15 @@ import FollowTeacher from "./FollowTeacher";
 
 function StudentDashboard() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [showPanel, setShowPanel] = useState("dashboardveiw");
-
   const navigate = useNavigate();
+
+  const [panel, setPanel] = useState(sessionStorage.getItem("panel"));
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   const handleNavigation = (path) => {
-    setShowPanel(path);
+    sessionStorage.setItem("panel", path);
+    setPanel(path);
     setSidebarOpen(false);
   };
 
@@ -58,7 +59,7 @@ function StudentDashboard() {
             </h2>
             <div
               className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
-                showPanel === "home"
+                panel === "home"
                   ? "bg-gray-800 text-indigo-400"
                   : "hover:bg-gray-800"
               }`}
@@ -75,7 +76,7 @@ function StudentDashboard() {
             </h2>
             <div
               className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
-                showPanel === "examattendance"
+                panel === "examattendance"
                   ? "bg-gray-800 text-indigo-400"
                   : "hover:bg-gray-800"
               }`}
@@ -86,7 +87,7 @@ function StudentDashboard() {
             </div>
             <div
               className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
-                showPanel === "totalpoints"
+                panel === "totalpoints"
                   ? "bg-gray-800 text-indigo-400"
                   : "hover:bg-gray-800"
               }`}
@@ -97,7 +98,7 @@ function StudentDashboard() {
             </div>
             <div
               className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
-                showPanel === "followedteachers"
+                panel === "followedteachers"
                   ? "bg-gray-800 text-indigo-400"
                   : "hover:bg-gray-800"
               }`}
@@ -128,10 +129,10 @@ function StudentDashboard() {
 
         <div className="flex-1 p-4 sm:p-6 md:pl-0">
           <div className="bg-white rounded-xl shadow-md p-6 h-full">
-            {showPanel === "dashboardveiw" && <Details />}
-            {showPanel === "examattendance" && <ExamAttend />}
-            {showPanel === "totalpoints" && <YourInstitute />}
-            {showPanel === "followedteachers" && <FollowTeacher />}
+            {panel === "dashboardveiw" && <Details />}
+            {panel === "examattendance" && <ExamAttend />}
+            {panel === "totalpoints" && <YourInstitute />}
+            {panel === "followedteachers" && <FollowTeacher />}
           </div>
         </div>
       </div>

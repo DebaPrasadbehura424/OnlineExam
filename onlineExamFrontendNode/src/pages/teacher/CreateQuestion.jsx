@@ -7,6 +7,8 @@ function CreateQuestion(props) {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [questions, setQuestions] = useState([]);
   const selectquestionPaperId = sessionStorage.getItem("questionPaperId");
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
 
   const handleQuestionTextChangeBefore = (e) => {
     setQuestionText(e.target.value);
@@ -62,7 +64,6 @@ function CreateQuestion(props) {
         questionText,
         options,
         correctAnswer,
-        questionPaperId: selectquestionPaperId,
       };
       setQuestions([...questions, newQuestion]);
       setQuestionText("");
@@ -105,10 +106,10 @@ function CreateQuestion(props) {
     }
 
     try {
-       await axios.put(
-        "https://online-exam-backendnode.vercel.app/questionPaper/questions",
-        questions
-      );
+      await axios.put(`${backednUrl}/questionPaper/questions`, {
+        questionPaperId: selectquestionPaperId,
+        questions: questions,
+      });
       alert("Questions saved successfully.");
     } catch (error) {
       alert("Error submitting questions.");

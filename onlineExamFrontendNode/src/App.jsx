@@ -22,6 +22,8 @@ import ExamQuestion from "./pages/students/ExamQuestion";
 // import Demo from "./pages/authentication/Demo";
 import EditQuestion from "./pages/teacher/EditQuestion";
 import FollowTeacherPapers from "./pages/students/FollowTeacherPapers";
+import ExamAttend from "./pages/students/ExamAttend";
+import YourInstitute from "./pages/students/YourInstitute";
 
 function App() {
   return (
@@ -53,6 +55,9 @@ function App() {
       <Route path="/findpapers" element={<FollowTeacherPapers />} />
       <Route path="/examquestion" element={<ExamQuestion />} />
       <Route path="/studHelper" element={<StudDashBoard />} />
+      
+      <Route path="/examattend" element={<ExamAttend />} />
+      <Route path="/yourinstitute" element={<YourInstitute />} />
     </Routes>
   );
 }

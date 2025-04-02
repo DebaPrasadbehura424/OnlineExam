@@ -5,6 +5,7 @@ import heroImage from "../../3dmodels/hi.png";
 function Home() {
   const navigate = useNavigate();
   const statsRef = useRef(null);
+  sessionStorage.setItem("panel", "dashboardveiw");
 
   const handleRegisterClick = () => {
     sessionStorage.setItem("card", "register");

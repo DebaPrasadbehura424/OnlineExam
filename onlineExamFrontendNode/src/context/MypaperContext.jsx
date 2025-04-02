@@ -11,20 +11,24 @@ export function MypaperContext({ children }) {
   const institutePaperId = sessionStorage.getItem("institutePaperId");
   const myInstituteId = sessionStorage.getItem("myInstituteId");
   const [myInstituteData, setMyInstituteData] = useState(null);
+
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
   useEffect(() => {
     const fetchTeacherId = async () => {
       if (token != null && teacherId != null) {
         try {
-          const response = await axios.get(
-            "https://online-exam-backendnode.vercel.app/teacher/profile",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await axios.get(`${backednUrl}/teacher/profile`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           if (response.status === 200) {
-            sessionStorage.setItem("myInstituteId", response.data.myInstitute);
+            sessionStorage.setItem(
+              "myInstituteId",
+              response.data.myInstitute || undefined
+            );
             sessionStorage.setItem("teacherId", response.data._id);
           }
         } catch (error) {
@@ -40,7 +44,7 @@ export function MypaperContext({ children }) {
       if (teacherId != null) {
         try {
           const response = await axios.get(
-            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${teacherId}`
+            `${backednUrl}/teacher/questionPaperCreatedByTeacher/${teacherId}`
           );
 
           setQuestionPapers(response.data.questionPapers);
@@ -53,32 +57,13 @@ export function MypaperContext({ children }) {
     fetchQuestionPapers();
   }, [teacherId]);
 
-  useEffect(() => {
-    const teacherId = sessionStorage.getItem("teacherId");
-    if (teacherId) {
-      const fetchQuestionPapers = async () => {
-        try {
-          const response = await axios.get(
-            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${teacherId}`
-          );
-          setQuestionPapers(response.data.questionPapers);
-        } catch (error) {
-          console.error("Error fetching question papers:", error);
-        }
-      };
-      fetchQuestionPapers();
-    }
-  }, []);
-
   const [loading, setLoading] = useState(true);
   //works properly done
   useEffect(() => {
     if (myInstituteId) {
       setLoading(true);
       axios
-        .get(
-          `https://online-exam-backendnode.vercel.app/institute/showMyInsitute/${teacherId}`
-        )
+        .get(`${backednUrl}/institute/showMyInsitute/${teacherId}`)
         .then((response) => {
           const institute = response.data;
           setMyInstituteData(institute);

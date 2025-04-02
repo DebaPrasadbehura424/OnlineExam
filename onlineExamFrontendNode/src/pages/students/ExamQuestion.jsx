@@ -16,14 +16,13 @@ function ExamQuestion() {
   const [showResultCard, setShowResultCard] = useState(false);
 
   const questionPaperId = sessionStorage.getItem("questionPaperId");
-
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
   useEffect(() => {
     if (!questionPaperId) return;
     setLoading(true);
     axios
-      .get(
-        `https://online-exam-backendnode.vercel.app/questionPaper/showquestions/${questionPaperId}`
-      )
+      .get(`${backednUrl}/questionPaper/showquestions/${questionPaperId}`)
       .then((res) => {
         if (res.status === 200) {
           setQuestionsToShow(res.data);

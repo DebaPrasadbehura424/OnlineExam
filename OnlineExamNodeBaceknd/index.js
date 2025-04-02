@@ -10,20 +10,20 @@ const teacherRoutes = require("./server/route/TeacherRoute");
 const studentRoutes = require("./server/route/StudentRoute");
 const instituteRoutes = require("./server/route/MyinstituteRoute");
 const questionPaperRoutes = require("./server/route/QuestionPaperRoute");
-
-app.use(
-  cors({
-    origin: "https://online-exam-forntendnode.vercel.app",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Accept",
-      "X-Requested-With",
-    ],
-  })
-);
+app.use(cors());
+// app.use(
+//   cors({
+//     origin: "https://online-exam-forntendnode.vercel.app",
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Accept",
+//       "X-Requested-With",
+//     ],
+//   })
+// );
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

@@ -15,18 +15,24 @@ function Register() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://online-exam-backendnode.vercel.app/${
-          isStudent ? "student" : "teacher"
-        }/register`,
+        `${backednUrl}/${isStudent ? "student" : "teacher"}/register`,
         formData
       );
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
+        if (isStudent) {
+          sessionStorage.setItem("studentId", response.data.student._id);
+        } else {
+          sessionStorage.setItem("teacherId", response.data.teacher._id);
+        }
         alert(`successfully ${isStudent ? "student" : "teacher" + "register"}`);
         navigate(isStudent ? "/studHelper" : "/loginhelper");
       }

@@ -10,11 +10,14 @@ function EditQuestion() {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const questionPaperId = sessionStorage.getItem("questionPaperId");
 
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
   useEffect(() => {
     const fetchQuestionPaper = async () => {
       try {
         const { data } = await axios.get(
-          `https://online-exam-backendnode.vercel.app/questionPaper/showquestions/${questionPaperId}`
+          `${backednUrl}/questionPaper/showquestions/${questionPaperId}`
         );
 
         setQuestionPaper(data);
@@ -54,7 +57,7 @@ function EditQuestion() {
   const handleSubmit = async () => {
     if (!questions.length) return alert("No questions to submit.");
     try {
-      await axios.put("http://localhost:7777/questionPaper/questions", {
+      await axios.put(`${backednUrl}/questionPaper/questions`, {
         questionPaperId: questionPaperId,
         questions: questions,
       });

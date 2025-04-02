@@ -3,13 +3,16 @@ import axios from "axios";
 
 function Students() {
   const myInstituteId = sessionStorage.getItem("myInstituteId");
+
   const [students, setStudents] = useState([]);
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
 
   useEffect(() => {
     if (myInstituteId) {
       const fetchStudents = async () => {
         await axios
-          .get(`https://online-exam-backendnode.vercel.app/institute/showstudent/${myInstituteId}`)
+          .get(`${backednUrl}/institute/showstudent/${myInstituteId}`)
           .then((res) => {
             if (res.status == 200) {
               setStudents(res.data.students);
@@ -67,8 +70,8 @@ function Students() {
             <div className="col-span-full text-center py-10 sm:py-12 bg-red-50 border border-red-200 rounded-xl shadow-md animate-fade-in">
               <p className="text-base sm:text-lg font-semibold text-red-600">
                 {myInstituteId != undefined
-                  ? " please create institute if not created"
-                  : "there is no student who follow you"}
+                  ? "there is no student who follow you"
+                  : " please create institute if not created"}
               </p>
             </div>
           )}

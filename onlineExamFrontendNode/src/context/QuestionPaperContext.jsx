@@ -7,12 +7,14 @@ const QuestionPaperContext = ({ children }) => {
   const studentId = sessionStorage.getItem("studentId");
   const [questionPaperId, setQuestionPaperId] = useState([]);
 
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
+
   useEffect(() => {
     if (studentId) {
       axios
-        .get(
-          `https://online-exam-backendnode.vercel.app/student/showInstitute/${studentId}`
-        )
+        .get(`${backednUrl}/student/showInstitute/${studentId}`)
         .then((res) => {
           setInstitute(res.data.institutes || []);
         });

@@ -34,11 +34,13 @@ function Login() {
 
     setLoading(true);
     setError("");
+    // const backednUrl = "http://localhost:7777";
+    const backednUrl = "https://online-exam-backendnode.vercel.app";
 
     const url =
       role === "Teacher"
-        ? "https://online-exam-backendnode.vercel.app/teacher/login"
-        : "https://online-exam-backendnode.vercel.app/student/login";
+        ? `${backednUrl}/teacher/login`
+        : `${backednUrl}/student/login`;
 
     try {
       if (role === "Teacher") {

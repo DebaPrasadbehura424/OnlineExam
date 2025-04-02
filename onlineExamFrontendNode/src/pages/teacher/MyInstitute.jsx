@@ -10,9 +10,13 @@ function MyInstitute() {
   const [isEditing, setIsEditing] = useState(false);
 
   const teacherId = sessionStorage.getItem("teacherId");
-
+  const myInstituteId = sessionStorage.getItem("myInstituteId");
   const { loading, myInstituteData, setMyInstituteData } =
     useContext(mypaperContextData);
+
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
   const [formData, setFormData] = useState({
     instituteName: "",
     description: "",
@@ -53,7 +57,9 @@ function MyInstitute() {
       return;
     }
     try {
-      const response = await axios.put(`https://online-exam-backendnode.vercel.app/institute/edit`, {
+      console.log({ ...formData, instituteId: myInstituteId });
+
+      const response = await axios.put(`${backednUrl}/institute/edit`, {
         ...formData,
         instituteId: myInstituteId,
       });
@@ -79,7 +85,7 @@ function MyInstitute() {
     e.preventDefault();
     setMyInstituteData(formData);
     axios
-      .post("https://online-exam-backendnode.vercel.app/institute/create", formData)
+      .post(`${backednUrl}/institute/create`, formData)
       .then((response) => {
         alert("Institute is created successfully");
         sessionStorage.setItem("myInstituteId", response.data.institute._id);
@@ -91,7 +97,7 @@ function MyInstitute() {
   const handleDelete = () => {
     if (window.confirm("Are you sure? This action cannot be undone!")) {
       axios
-        .delete(`https://online-exam-backendnode.vercel.app/teacher/delete/${teacherId}`)
+        .delete(`${backednUrl}/teacher/delete/${teacherId}`)
         .then(() => {
           alert("Success: Institute deleted successfully.");
           setMyInstituteData(null);
@@ -106,7 +112,7 @@ function MyInstitute() {
       <div className="max-w-4xl mx-auto">
         {loading ? (
           <p>Loading...</p>
-        ) : myInstituteData ? (
+        ) : (myInstituteData || []).length != 0 ? (
           <div className="bg-white rounded-xl shadow-lg p-8">
             {isEditing ? (
               <IsEditingFalse

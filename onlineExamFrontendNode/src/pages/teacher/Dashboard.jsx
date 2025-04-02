@@ -18,16 +18,16 @@ import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  const [showPanel, setShowPanel] = useState("dashboardveiw");
-
   const navigate = useNavigate();
-
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
+  const [panel, setPanel] = useState(sessionStorage.getItem("panel"));
+
   const handleNavigation = (path) => {
-    setShowPanel(path);
+    sessionStorage.setItem("panel", path);
+    setPanel(path);
   };
+
   const handleLogout = () => {
     sessionStorage.clear();
     localStorage.clear();
@@ -120,11 +120,10 @@ function Dashboard() {
         </div>
 
         <div className="bg-gray-300 p-6 rounded-lg shadow-lg h-full">
-          {showPanel === "" && <DashboardOverView />}
-          {showPanel === "dashboardveiw" && <DashboardOverView />}
-          {showPanel === "mypapers" && <MyPapers />}
-          {showPanel === "myinstitute" && <MyInstitute />}
-          {showPanel === "students" && <Students />}
+          {panel === "dashboardveiw" && <DashboardOverView />}
+          {panel === "mypapers" && <MyPapers />}
+          {panel === "myinstitute" && <MyInstitute />}
+          {panel === "students" && <Students />}
         </div>
       </div>
 

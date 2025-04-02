@@ -16,14 +16,19 @@ function CreateExamPaper() {
       examType: "MCQ",
       teacher: teacherId,
     };
+    // const backednUrl = "http://localhost:7777";
+    const backednUrl = "https://online-exam-backendnode.vercel.app";
 
     try {
       const response = await axios.post(
-        "https://online-exam-backendnode.vercel.app/questionPaper/question-paper",
+        `${backednUrl}/questionPaper/question-paper`,
         examData
       );
       if (response.status === 201) {
-        sessionStorage.setItem("questionPaperId", response.data._id);
+        sessionStorage.setItem(
+          "questionPaperId",
+          response.data.questionPaper._id
+        );
         navigate("/create-question");
       }
     } catch (error) {

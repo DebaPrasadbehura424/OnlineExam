@@ -10,11 +10,13 @@ function ShowPaperQuestion(props) {
 
   const questionPaperId = sessionStorage.getItem("questionPaperId");
 
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
   useEffect(() => {
     const fetchQuestionPaper = async () => {
       try {
         const response = await axios.get(
-          `https://online-exam-backendnode.vercel.app/questionPaper/showquestions/${questionPaperId}`
+          `${backednUrl}/questionPaper/showquestions/${questionPaperId}`
         );
         setQuestionsWithPaper(response.data);
       } catch (err) {
@@ -29,7 +31,8 @@ function ShowPaperQuestion(props) {
 
   const handleNextPage = () => {
     if (
-      currentPage < Math.ceil(questionPaper.questions.length / questionsPerPage)
+      currentPage <
+      Math.ceil(questionsWithPaper.questions.length / questionsPerPage)
     ) {
       setCurrentPage(currentPage + 1);
     }

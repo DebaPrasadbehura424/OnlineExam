@@ -7,6 +7,8 @@ import { mypaperContextData } from "../../context/MypaperContext";
 function MyPapers() {
   const { questionPapers, setQuestionPapers, instituteIdPaperId } =
     useContext(mypaperContextData);
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
 
   const navigate = useNavigate();
   //during student it is  show
@@ -23,7 +25,7 @@ function MyPapers() {
 
   const handleDeletePaper = async (id) => {
     try {
-      await axios.delete(` https://online-exam-backendnode.vercel.app/questionPaper/delete/${id}`);
+      await axios.delete(`${backednUrl}/questionPaper/delete/${id}`);
       setQuestionPapers(questionPapers.filter((paper) => paper._id !== id));
     } catch (error) {
       console.error("Error deleting question paper:", error);

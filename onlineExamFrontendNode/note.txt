@@ -1,0 +1,21 @@
+createuqestion paper backend ra put diffrent achi check 
+my intitute edit is not working
+
+and in edit questioon chnage url ok 
+
+when user open it is a issue it not redotect to the dashboard when i tap tap on sign in that time it is redirect there  is  some 
+issue in teacherId
+studentId fic that and store teacherId or studentId in localstoragre use token insted of this ids
+
+in followed teacher i makes that if studentId is present then connect button able to tap but i not store the studentId so use token also
+now i will store my teacherId studentId and token in loccalstorage
+
+during register and login  save this two
+
+
+your intitute card make smaller and more interactive
+
+in teacher section remove myintituteid in student follow section ok 
+
+
+in showpaper question make responsos data and check ok 

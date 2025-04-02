@@ -7,11 +7,12 @@ function ExamAttend() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
   useEffect(() => {
     setError(null);
     axios
-      .get("https://online-exam-backendnode.vercel.app/questionPaper/getQuestionPaper")
+      .get(`${backednUrl}/questionPaper/getQuestionPaper`)
       .then((res) => {
         setQuestionPapers(res.data);
         setLoading(false);

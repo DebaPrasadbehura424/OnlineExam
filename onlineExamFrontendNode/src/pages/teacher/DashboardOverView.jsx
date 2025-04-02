@@ -1,15 +1,46 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaEdit, FaChartBar, FaUsers, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { mypaperContextData } from "../../context/MypaperContext";
+import axios from "axios";
+
 const DashboardOverView = () => {
   const navigate = useNavigate();
+  const teacherId = sessionStorage.getItem("teacherId");
+
+  const [questionPapers, setQuestionPapers] = useState([]);
+  const [student, setStudent] = useState(null);
+
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
+
+  useEffect(() => {
+    const fetchQuestionPapers = async () => {
+      if (teacherId != null) {
+        try {
+          const response = await axios.get(
+            `${backednUrl}/teacher/questionPaperCreatedByTeacher/${teacherId}`
+          );
+          setQuestionPapers(response.data.questionPapers.reverse());
+        } catch (error) {
+          console.error("Error fetching question papers:", error);
+        }
+      }
+    };
+    fetchQuestionPapers();
+  }, [teacherId]);
+  useEffect(() => {
+    axios
+      .get(`${backednUrl}/institute/showMyInsitute/${teacherId}`)
+      .then((response) => {
+        const institute = response.data;
+        setStudent(institute.students);
+      })
+      .catch(() => console.log("error is ahead"));
+  }, [teacherId]);
   const handleQuestionPaperId = (id) => {
     sessionStorage.setItem("questionPaperId", id);
     navigate("/showquestionpaper");
   };
-  const { student, questionPapers, setQuestionPapers } =
-    useContext(mypaperContextData);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">

@@ -8,13 +8,15 @@ function FollowTeacherPapers() {
   const { setQuestionPaperId } = useContext(questionPaperContextData);
   const instituteIdPaperId = sessionStorage.getItem("instituteIdPaperId");
   const navigate = useNavigate();
+  // const backednUrl = "http://localhost:7777";
+  const backednUrl = "https://online-exam-backendnode.vercel.app";
 
   useEffect(() => {
     const fetchQuestionPapers = async () => {
       if (instituteIdPaperId != null) {
         try {
           const response = await axios.get(
-            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${instituteIdPaperId}`
+            `${backednUrl}/teacher/questionPaperCreatedByTeacher/${instituteIdPaperId}`
           );
           console.log(response.data);
 
