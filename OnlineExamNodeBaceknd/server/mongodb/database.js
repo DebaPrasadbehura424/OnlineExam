@@ -7,7 +7,7 @@ module.exports.connectDb = () => {
   mongoose
     .connect(mongoDbAtlasUri)
     .then(() => {
-      console.log("database  is successfully connected ");
+      console.log("database  is successfully connected "); 
     })
     .catch((err) => {
       console.log("database is not connected");

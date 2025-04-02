@@ -23,7 +23,7 @@ function MyPapers() {
 
   const handleDeletePaper = async (id) => {
     try {
-      await axios.delete(` http://localhost:7777/questionPaper/delete/${id}`);
+      await axios.delete(` https://online-exam-backendnode.vercel.app/questionPaper/delete/${id}`);
       setQuestionPapers(questionPapers.filter((paper) => paper._id !== id));
     } catch (error) {
       console.error("Error deleting question paper:", error);
@@ -31,7 +31,7 @@ function MyPapers() {
   };
 
   const handleEditPaper = (id) => {
-    sessionStorage.setItem("questionPaperIdx", id);
+    sessionStorage.setItem("questionPaperId", id);
     navigate("/editquestionpaper");
   };
 

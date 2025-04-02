@@ -19,7 +19,7 @@ function CreateExamPaper() {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/questionPaper/question-paper",
+        "https://online-exam-backendnode.vercel.app/questionPaper/question-paper",
         examData
       );
       if (response.status === 201) {

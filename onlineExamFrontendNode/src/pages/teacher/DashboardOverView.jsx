@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaPlus, FaEdit, FaChartBar, FaUsers, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { mypaperContextData } from "../../context/MypaperContext";
 const DashboardOverView = () => {
   const navigate = useNavigate();

@@ -15,7 +15,7 @@ function FollowTeacher() {
     const fetchTeachers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:7777/institute/showMyInsituteAll"
+          "https://online-exam-backendnode.vercel.app/institute/showMyInsituteAll"
         );
         if (response.status === 200) {
           setTeachers(response.data || []);
@@ -41,7 +41,7 @@ function FollowTeacher() {
     setTeachers(updatedTeachers);
     try {
       const response = await axios.post(
-        `http://localhost:7777/institute/addstudent`,
+        `https://online-exam-backendnode.vercel.app/institute/addstudent`,
         {
           instituteId,
           studentId,

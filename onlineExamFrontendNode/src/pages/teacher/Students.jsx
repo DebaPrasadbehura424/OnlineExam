@@ -9,7 +9,7 @@ function Students() {
     if (myInstituteId) {
       const fetchStudents = async () => {
         await axios
-          .get(`http://localhost:7777/institute/showstudent/${myInstituteId}`)
+          .get(`https://online-exam-backendnode.vercel.app/institute/showstudent/${myInstituteId}`)
           .then((res) => {
             if (res.status == 200) {
               setStudents(res.data.students);

@@ -14,7 +14,7 @@ function FollowTeacherPapers() {
       if (instituteIdPaperId != null) {
         try {
           const response = await axios.get(
-            `http://localhost:7777/teacher/questionPaperCreatedByTeacher/${instituteIdPaperId}`
+            `https://online-exam-backendnode.vercel.app/teacher/questionPaperCreatedByTeacher/${instituteIdPaperId}`
           );
           console.log(response.data);
 

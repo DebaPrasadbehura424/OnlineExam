@@ -22,7 +22,7 @@ function ExamQuestion() {
     setLoading(true);
     axios
       .get(
-        `http://localhost:7777/questionPaper/showquestions/${questionPaperId}`
+        `https://online-exam-backendnode.vercel.app/questionPaper/showquestions/${questionPaperId}`
       )
       .then((res) => {
         if (res.status === 200) {

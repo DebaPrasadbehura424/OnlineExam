@@ -14,7 +14,7 @@ function EditQuestion() {
     const fetchQuestionPaper = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:7777/questionPaper/showquestions/${questionPaperId}`
+          `https://online-exam-backendnode.vercel.app/questionPaper/showquestions/${questionPaperId}`
         );
 
         setQuestionPaper(data);

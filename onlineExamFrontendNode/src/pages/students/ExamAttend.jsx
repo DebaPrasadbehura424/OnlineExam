@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { questionPaperContextData } from "../../context/QuestionPaperContext";
 import axios from "axios";
 
 function ExamAttend() {
@@ -12,7 +11,7 @@ function ExamAttend() {
   useEffect(() => {
     setError(null);
     axios
-      .get("http://localhost:7777/questionPaper/getQuestionPaper")
+      .get("https://online-exam-backendnode.vercel.app/questionPaper/getQuestionPaper")
       .then((res) => {
         setQuestionPapers(res.data);
         setLoading(false);

@@ -53,7 +53,7 @@ function MyInstitute() {
       return;
     }
     try {
-      const response = await axios.put(`http://localhost:7777/institute/edit`, {
+      const response = await axios.put(`https://online-exam-backendnode.vercel.app/institute/edit`, {
         ...formData,
         instituteId: myInstituteId,
       });
@@ -79,7 +79,7 @@ function MyInstitute() {
     e.preventDefault();
     setMyInstituteData(formData);
     axios
-      .post("http://localhost:7777/institute/create", formData)
+      .post("https://online-exam-backendnode.vercel.app/institute/create", formData)
       .then((response) => {
         alert("Institute is created successfully");
         sessionStorage.setItem("myInstituteId", response.data.institute._id);
@@ -91,7 +91,7 @@ function MyInstitute() {
   const handleDelete = () => {
     if (window.confirm("Are you sure? This action cannot be undone!")) {
       axios
-        .delete(`http://localhost:7777/teacher/delete/${teacherId}`)
+        .delete(`https://online-exam-backendnode.vercel.app/teacher/delete/${teacherId}`)
         .then(() => {
           alert("Success: Institute deleted successfully.");
           setMyInstituteData(null);

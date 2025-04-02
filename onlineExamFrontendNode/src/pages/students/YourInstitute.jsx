@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 function YourInstitute() {
   const { institute } = useContext(questionPaperContextData);
-  console.log(institute);
 
   const navigate = useNavigate();
 

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function CreateQuestion(props) {
   const [questionText, setQuestionText] = useState("");
@@ -106,8 +105,8 @@ function CreateQuestion(props) {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:7777/questionPaper/questions",
+       await axios.put(
+        "https://online-exam-backendnode.vercel.app/questionPaper/questions",
         questions
       );
       alert("Questions saved successfully.");
