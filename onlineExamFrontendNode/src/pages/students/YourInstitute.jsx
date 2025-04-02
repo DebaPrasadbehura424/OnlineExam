@@ -14,7 +14,7 @@ function YourInstitute() {
   return (
     <div className="min-h-screen bg-gradient-to-tr from-teal-50 via-white to-purple-50 py-20 px-4 sm:px-6 lg:px-12">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-teal-800 mb-16 bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent animate-fade-in tracking-wide">
+        <h2 className="text-4xl md:text-5xl font-bold text-center  mb-16 bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent animate-fade-in tracking-wide">
           Your Institutes
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
